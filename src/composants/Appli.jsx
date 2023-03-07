@@ -39,9 +39,9 @@ export default function Appli() {
     );
   
 
-    function ajouterModifierDossier(id, titre, couverture, couleur, date) {
+    function ajouterModifierDossier(id, titre, couverture, couleur, timestamp) {
 
-      console.log("Recu du formulaire : ", id, titre, couverture, couleur, date)
+      console.log("Recu du formulaire : ", id, titre, couverture, couleur, timestamp)
 
       //On copie le dossier et on le met dans setDossiers() de useState
       setDossiers( [...dossiers, 
@@ -51,8 +51,8 @@ export default function Appli() {
           titre: titre, 
           couverture: couverture, 
           couleur: couleur, 
-          dateModif: date
-        }
+          dateModif: timestamp
+        },
       ])
     };
 

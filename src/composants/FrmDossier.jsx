@@ -9,13 +9,14 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { TwitterPicker } from 'react-color';
 import { useState } from 'react';
 
-export default function FrmDossier({ ouvert, setOuvert, actionDossier}) {
+//actionDossier c'est pour modifierDossier dans Dossier
+export default function FrmDossier({ouvert, setOuvert, actionDossier, id_p=null, titre_p='', couverture_p='', couleur_p='#000'}) {
 
   //Création de 3 états pour les 3 états de formulaire
   //Un état titre, qui démarre vide...
-const [titre, setTitre] = useState('');
-const [couverture, setCouverture] = useState('');
-const [couleur, setCouleur] = useState('#000');
+const [titre, setTitre] = useState(titre_p);
+const [couverture, setCouverture] = useState(couverture_p);
+const [couleur, setCouleur] = useState(couleur_p); //valeur par défaut de l'état de modification ??
 
 console.log("Le titre dans le formulaire : ", titre);
 console.log("La couverture : ", couverture);
@@ -27,24 +28,23 @@ console.log("La couleur : ", couleur);
 
     //reinitialiser le formulaire / les variables d'état
    // form[0].reset(); si c'était en JS avec le DOM
-    setTitre('');
-    setCouverture('');
-    setCouleur('');
+    setTitre(titre_p);
+    setCouverture(couverture_p);
+    setCouleur(couleur_p);
     //Changer le bool 
     setOuvert(false);
   };
 
 function gererActionDossier () {
-  let date = new Date();
-  let id = 'ds_' + date.getTime() + Math.random();
-  actionDossier(id, titre, couverture, couleur, date.toJSON()) //titre, couverture, couleur sont dans useState (form)
+  let timestamp = new Date().getTime();
+  let id = (!id_p) ? crypto.randomUUID() : id_p;
+  actionDossier(id, titre, couverture, couleur, timestamp) //titre, couverture, couleur sont dans useState (form)
 
   //Fermer la boite de dialogue
   gererFermer();
 }
 
-
-  return (
+ return (
     <div className="FrmDossier">
       <Dialog open={ouvert} onClose={gererFermer}>
         <DialogTitle>Ajouter / Modifier Dossier</DialogTitle>
@@ -59,6 +59,7 @@ function gererActionDossier () {
             variant="standard"
             //gestionnaire d'évènement, onChange est le addEventListener de React
             onChange={(evt) => setTitre(evt.target.value)} 
+            value={titre}
           />
           <TextField
             margin="dense"
@@ -69,14 +70,16 @@ function gererActionDossier () {
             variant="standard"
             //gestionnaire d'évènement 
            onChange={(evt) => setCouverture(evt.target.value)}
+           value={couverture}
           />
           <TwitterPicker
           triangle='hide'
           width='auto'
           color={'#ff000'}
-          colors={['#0f0', '#00f', '#036', '#960']}
+          colors={['#05668D', '#028090', '#00A896', '#02C39A', '#32965D']}
         //onChangeComplete={ (clr, evt) => console.log(clr, evt)}
           onChangeComplete={clr=> setCouleur(clr.hex)}
+          value={couleur}
           />
         </DialogContent>
         <DialogActions>
