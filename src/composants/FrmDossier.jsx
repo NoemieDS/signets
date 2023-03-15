@@ -18,10 +18,6 @@ const [titre, setTitre] = useState(titre_p);
 const [couverture, setCouverture] = useState(couverture_p);
 const [couleur, setCouleur] = useState(couleur_p); //valeur par défaut de l'état de modification ??
 
-console.log("Le titre dans le formulaire : ", titre);
-console.log("La couverture : ", couverture);
-console.log("La couleur : ", couleur);
-
 //Gestion de la fermeture du formulaire
   const gererFermer = () => {
     //c'est une expression de fonction assignée à une constante (variable)
@@ -37,8 +33,7 @@ console.log("La couleur : ", couleur);
 
 function gererActionDossier () {
   let timestamp = new Date().getTime();
-  let id = (!id_p) ? crypto.randomUUID() : id_p;
-  actionDossier(id, titre, couverture, couleur, timestamp) //titre, couverture, couleur sont dans useState (form)
+  actionDossier(titre, couverture, couleur, timestamp) //titre, couverture, couleur sont dans useState (form)
 
   //Fermer la boite de dialogue
   gererFermer();

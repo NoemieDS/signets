@@ -1,45 +1,7 @@
 import "./ListeDossiers.scss";
 import Dossier from "./Dossier";
-import { initializeApp } from 'firebase/app';
-import { collection, getDoc, getDocs, getFirestore, onSnapshot } from 'firebase/firestore';
-import { useEffect } from "react";
-import firebaseConfig from "../code/fb-config";
-
 
 export default function ListeDossiers({ dossiers, setDossiers }) {
-
-function chercherDossiers() {
-  const app = initializeApp(firebaseConfig);
-  const bd = getFirestore(app);
- /*  const dossiersFS = getDocs(collection(bd, 'dossiers')).then(
-    resultat => console.log('résultas retournés par getDocs()', resultat.docs[0].id)
-  ) */
-/*   const dossiersFS = getDocs(collection(bd, 'dossiers')).then(
-    resultat => console.log('résultas retournés par getDocs()', resultat.docs[0].data)
-  ) */
-  getDocs(collection(bd, 'dossiers')).then(
-    resultat => setDossiers(resultat.docs.map( //manque le ID 
-      doc => ({id: doc.id, ...doc.data()})
-    ))
-  )
-}
-
-function observerDossiers() {
-  const app = initializeApp(firebaseConfig);
-  const bd = getFirestore(app);
-  onSnapshot(collection(bd, 'dossiers'), //onsnapshot est un écouteur, prend 2 arguments, quoi écouter (query), 2 une fonction, quoi faire)
-  resultat => setDossiers(resultat.docs.map(
-    doc => ({id: doc.id, ...doc.data()})
-  ))
-  );
-}
-
-
-
-/*Appel une seule fois, setDossiers doit lire une seule fois*/
-useEffect(observerDossiers, []);
-
-
   /**
    * Supprime un dossier de la collection de dossiers
    *
@@ -72,7 +34,6 @@ useEffect(observerDossiers, []);
   }
 
   return (
-    
     dossiers.length>0 ?
     <section className="ListeDossiers">
       {

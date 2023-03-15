@@ -1,1 +1,4 @@
 node_modules
+
+#ignorer l'objet de config Firebase
+/src/code/fb-config.js

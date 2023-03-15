@@ -5,9 +5,6 @@ import FrmDossier from './FrmDossier';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import { useEffect, useState } from 'react';
-import { initializeApp } from 'firebase/app';
-import { collection, doc, getFirestore, setDoc } from 'firebase/firestore';
-import firebaseConfig from "../code/fb-config";
 
 export default function Appli() {
   
@@ -15,7 +12,7 @@ export default function Appli() {
 
   //État des dossiers de l'utilisateur
   /*
-  Structure de la variable dossiers 
+  Structure de la variable dossier pour le localStorage
   [
     {
       id: '4565856987', 
@@ -32,7 +29,9 @@ export default function Appli() {
 
   //État des dossiers de l'utilisateur, lire dans localStorage ou initié un []
   //Lire les dossiers dans le localStorage
-  const [dossiers, setDossiers] = useState([]);
+  const [dossiers, setDossiers] = useState(
+    ()=>JSON.parse(localStorage.getItem('4pa-dossiers')) || []
+    );
 
     useEffect(
       () => localStorage.setItem('4pa-dossiers', JSON.stringify(dossiers))
@@ -40,16 +39,24 @@ export default function Appli() {
     );
   
 
-    function ajouterModifierDossier(titre, couverture, couleur, dateModif) {
+    function ajouterModifierDossier(id, titre, couverture, couleur, timestamp) {
 
-      const app = initializeApp(firebaseConfig);
-      const bd = getFirestore(app);
-      const idDossier = doc(collection(bd, 'dossiers')); //un path qui n'existe pas, il va retourner un new doc avec un newid
-      const dossierData = {titre, couverture, couleur, couleur, dateModif}; //va faire étiquettes et valeur aux même nom
-      setDoc(idDossier, dossierData).then( //setDoc doit être asynchrone et on veut agir que quand c'est complété
-      () => setDossiers([...dossiers, {id: idDossier, ...dossierData}])  //splice le tableau et ajouter un nouvel objet mais manque le ID    
-      );}
+      console.log("Recu du formulaire : ", id, titre, couverture, couleur, timestamp)
 
+      //On copie le dossier et on le met dans setDossiers() de useState
+      setDossiers( [...dossiers, 
+        //Et on ajoute le nouveau dossier
+        {
+          id: id, 
+          titre: titre, 
+          couverture: couverture, 
+          couleur: couleur, 
+          dateModif: timestamp
+        }
+      ])
+    };
+
+//on passe les variables aux composants
   return (
     <div className="Appli">
         <Entete />
