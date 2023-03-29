@@ -1,4 +1,3 @@
-/* import * as React from 'react'; ça importe tout et on veut pas*/
 import './FrmDossier.scss';
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";

@@ -45,7 +45,7 @@ export default function Dossier({
       </div>
       <div className="info">
         <h2>{titre}</h2>
-        <p>Modifié : {new Date(dateModif).toLocaleDateString('fr-CA', {dateStyle: 'long'})}</p>
+        <p>Modifié : {new Date(dateModif.seconds*1000).toLocaleDateString('fr-CA', {dateStyle: 'long'})}</p>
         <IconButton
           onClick={() => setFrmDossierOuvert(true)}
           className="modifier"
