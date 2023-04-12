@@ -3,30 +3,16 @@ import Dossier from './Dossier';
 import { initializeApp } from 'firebase/app';
 import { collection, getDocs, getFirestore, onSnapshot } from 'firebase/firestore'; 
 import { useEffect } from 'react';
-import firebaseConfig from '../code/fb-config';
+import { lireTout, modifier, supprimer } from '../code/dossier-modele';
 
-export default function ListeDossiers({dossiers, setDossiers}) {
-  
-  
-  function observerDossiers() {
-    const app = initializeApp(firebaseConfig);
-    const bd = getFirestore(app);
-    onSnapshot(collection(bd, 'utilisateurs-signets', 'MXGU9ktauc62pKrnqhgl', 'dossiers'), 
-      resultat => setDossiers(resultat.docs.map(
-        doc => ({id: doc.id, ...doc.data()})
-      ))
-    );
-  }
+export default function ListeDossiers({dossiers, setDossiers, utilisateur}) {
 
   useEffect(()=> {
-    function chercherDossiers() {
-      const app = initializeApp(firebaseConfig);
-      const bd = getFirestore(app);
-      getDocs(collection(bd, 'utilisateurs-signets', 'MXGU9ktauc62pKrnqhgl', 'dossiers')).then(
-        resultat => setDossiers(resultat.docs.map(
+    async function chercherDossiers() {
+      const dossierFS = await lireTout(utilisateur.uid)
+      setDossiers(dossierFS.map(
           doc => ({id: doc.id, ...doc.data()})
-        ))
-      )
+      ));
     }
     chercherDossiers();
   }, []);
@@ -39,10 +25,13 @@ export default function ListeDossiers({dossiers, setDossiers}) {
    * @returns void
    */
   function supprimerDossier(idd) {
+    supprimer(utilisateur.uid, idd);
     setDossiers(dossiers.filter(dossier => dossier.id !== idd));
   }
 
-  function modifierDossier(idd, titre, couverture, couleur, timestamp) {
+  async function modifierDossier(idd, titre, couverture, couleur, dateModif) {
+    // Modifier le dossier dans Firestore
+    await modifier(utilisateur.uid, idd, {titre, couverture, couleur, dateModif});
     setDossiers(dossiers.map(
       dossier => {
         if(dossier.id === idd) {
@@ -51,7 +40,7 @@ export default function ListeDossiers({dossiers, setDossiers}) {
             titre: titre, 
             couverture: couverture, 
             couleur: couleur,
-            dateModif: timestamp
+            dateModif: dateModif
           });
         }
         return dossier;

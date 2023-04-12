@@ -1,6 +1,6 @@
 const firebaseConfig = {
-//copier ici votre objet de configuration 
-//et renommer le fichier
+    // Votre objet de configuration Firebase ici
+    // Et renommer le fichier. 
 };
 
-export default firebaseConfig;
+export default firebaseConfig; 
