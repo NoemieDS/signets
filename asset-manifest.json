@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/NoemieDS/signets/static/css/main.863607b5.css",
-    "main.js": "/NoemieDS/signets/static/js/main.a01f74de.js",
-    "static/media/couverture-defaut.jpg": "/NoemieDS/signets/static/media/couverture-defaut.eac5eff7dcea2490ca8a.jpg",
-    "index.html": "/NoemieDS/signets/index.html",
-    "main.863607b5.css.map": "/NoemieDS/signets/static/css/main.863607b5.css.map",
-    "main.a01f74de.js.map": "/NoemieDS/signets/static/js/main.a01f74de.js.map"
+    "main.css": "/signets/static/css/main.863607b5.css",
+    "main.js": "/signets/static/js/main.bfacba16.js",
+    "static/media/couverture-defaut.jpg": "/signets/static/media/couverture-defaut.eac5eff7dcea2490ca8a.jpg",
+    "index.html": "/signets/index.html",
+    "main.863607b5.css.map": "/signets/static/css/main.863607b5.css.map",
+    "main.bfacba16.js.map": "/signets/static/js/main.bfacba16.js.map"
   },
   "entrypoints": [
     "static/css/main.863607b5.css",
-    "static/js/main.a01f74de.js"
+    "static/js/main.bfacba16.js"
   ]
 }
