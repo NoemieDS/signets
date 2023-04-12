@@ -9,10 +9,12 @@ export default function Accueil() {
 		<main className="Accueil">
 			<section className="logo">
 				<img src={logo} alt="Logo Signets" />
-				<div>Signets</div>
+				<h1>Signets</h1>
 			</section>
 			<section className="connexion">
-				<button onClick={connexion}>Connexion avec Google</button>
+				<button onClick={connexion} className='btn-google'>
+					<img src={btnGoogle} alt="Logo Google" />
+					Continuer avec Google</button>
 			</section>
 		</main>
 	)

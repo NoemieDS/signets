@@ -1,4 +1,4 @@
-import { collection, deleteDoc, doc, getDocs, limit, orderBy, query, setDoc, updateDoc } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs, limit, where, orderBy, query, setDoc, updateDoc } from "firebase/firestore";
 import { bd, collDossiers, collUtilisateurs } from "./init";
 
 // ajouter un dossier
@@ -13,8 +13,10 @@ export async function lireTout(idUtil) {
     const dossiersFS = await getDocs(
         query(
             collection(bd, collUtilisateurs, idUtil, collDossiers),
+           // where('dateModif', '<', '454554454454556564'),
             orderBy('dateModif', 'desc'),
-            orderBy('titre', 'asc')    
+            orderBy('titre', 'asc'),
+            //limit(5)    
         )
     );
     return dossiersFS.docs;

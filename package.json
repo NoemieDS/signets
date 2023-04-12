@@ -1,6 +1,6 @@
 {
   "homepage-docu": "Pour déployer sur GitHub Pages vous devez configurer correctement la propriété homepage ci-dessous : 1) retirer le suffixe '-off', et 2) remplacer le nom de compte et de dépôt GitHub adéquatement dans l'URL.",
-  "homepage-off": "https://582-4PA.github.io/signets/",
+  "homepage-off": "https://github.com/NoemieDS/signet",
   "name": "signets",
   "version": "1.0",
   "private": true,

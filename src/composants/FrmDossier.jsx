@@ -19,9 +19,9 @@ export default function FrmDossier({ouvert, setOuvert, actionDossier, id_p=null,
   
 
   function gererFermer() {
-    // setTitre(titre_p);
-    // setCouverture(couverture_p);
-    // setCouleur(couleur_p);
+    //setTitre(titre_p);
+    //setCouverture(couverture_p);
+    //setCouleur(couleur_p);
     
     setOuvert(false);
   };
@@ -68,7 +68,7 @@ export default function FrmDossier({ouvert, setOuvert, actionDossier, id_p=null,
 						triangle='hide'
 						width='auto'
 						color={couleur}
-						colors={['#0f0', '#00f', '#036', '#960']}
+						colors={['#0f0', '#00f', '#036', '#960', '#F08080', '#FFFF00', '#05668D', '#028090', '#00A896', '#02C39A', '#32965D']}
 						onChangeComplete={clr=>setCouleur(clr.hex)}
             value={couleur}
 					/>
