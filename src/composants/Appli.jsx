@@ -1,11 +1,11 @@
 import Accueil from './Accueil';
 import PageUtilisateur from './PageUtilisateur';
 import './Appli.scss';
-import { useEffect, useState } from 'react';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth, bd } from '../code/init';
-import { doc, setDoc } from 'firebase/firestore';
+import { useEffect, useState, createContext } from 'react';
 import { observerEtatConnexion } from '../code/utilisateur-modele';
+
+export const UtilisateurContext = createContext(null);
+
 
 export default function Appli() {
     // État de connexion d'un utilisateur
@@ -17,6 +17,12 @@ export default function Appli() {
     );
 
     return (
-        utilisateur ? <PageUtilisateur utilisateur={utilisateur} /> : <Accueil/> 
+        utilisateur 
+        ? 
+        <UtilisateurContext.Provider value={utilisateur}>  
+        <PageUtilisateur /> 
+        </UtilisateurContext.Provider>
+        : 
+        <Accueil/> 
     );
 }
