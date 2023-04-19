@@ -26,7 +26,6 @@ export default function Dossier({
   //État des signets dans ce dossier
   const [signets, setSignets] = useState(top3 || []);
 
-
   // État d'ouverture du formulaire
   const [frmDossierOuvert, setFrmDossierOuvert] = useState(false);
 
@@ -42,6 +41,7 @@ function gererDragEnter(evt) {
   evt.dataTransfer.effectAllowed = 'link';
   evt.preventDefault();
   setZd(true);
+  console.log('Entre...');
 }
 
 function gererDragOver(evt) {
@@ -56,31 +56,30 @@ function gererDragLeave(evt) {
   return;
  }
  setZd(false);
+ console.log('Entre...');
  }
 
 async function gererDrop(evt) {
-  const url= evt.dataTransfer.getData('url');
+  const url= evt.dataTransfer.getData('URL');
   evt.preventDefault();
   console.log('Données déposées ', url)
   setZd(false);
   setContenuDossierVisible(true);
 
 //Chercher le titre associé à l'url
-const reponseUrl = await fetch(url);
-const reponseTexte = await reponseUrl.text();
-console.log(reponseTexte);
+ // Ce code est problématique à cause de CORS (détail au prochain cours)
+//const reponseUrl = await fetch(url);
+//const reponseTexte = await reponseUrl.text();
+//console.log(reponseTexte);
 
   ajouterSignet(id, url);
 }
 
 async function ajouterSignet(idDossier, urlSignet) {
-  const derniers3 = [...signets, {url: urlSignet, titre: 'temp'}].slice(-3);
+  const derniers3 = [...signets, {url: urlSignet, titre: urlSignet}].slice(-3);
   await creer(uid, idDossier, derniers3);
   setSignets(derniers3);
 }
-
-
-
 
   return (
     // Remarquez l'objet JS donné à la valeur de l'attribut style en JSX, voir :
@@ -88,16 +87,13 @@ async function ajouterSignet(idDossier, urlSignet) {
     <article 
     className={"Dossier"
     +(contenuDossierVisible ? ' actif' : '') 
-    +(zd ? ' zd' : '')} 
-
+    +(zd ? ' zd' : '')
+  } 
     style={{ backgroundColor: couleur }}
-
     onDragEnter={gererDragEnter}
     onDragOver={gererDragOver}
     onDrop={gererDrop}
     onDragLeave={gererDragLeave}
-    
-
     >
     
       <div className="carte">
@@ -166,7 +162,7 @@ async function ajouterSignet(idDossier, urlSignet) {
             </IconButton>
             {
               signets.map(
-                (signet, position) => <a key={position} href="{signet.url}" target='_blank'>
+                (signet, position) => <a key={position} href={signet.url} target='_blank'>
                 {signet.titre}
                 </a>
               )
