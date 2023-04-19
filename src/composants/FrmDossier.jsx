@@ -69,7 +69,7 @@ export default function FrmDossier({ouvert, setOuvert, actionDossier, id_p=null,
 						triangle='hide'
 						width='auto'
 						color={couleur}
-						colors={['#F08080', '#D95D39', '#F18805', '#ffe66b', '#036','#05668D', '#028090', '#00A896', '#02C39A', '#32965D', '#09AE4B']}
+						colors={['#F08080', '#D95D39', '#F18805', '#ffe66b', '#036','#05668D', '#028090', '#00A896', '#02C39A', '#32965D']}
 						onChangeComplete={clr=>setCouleur(clr.hex)}
             value={couleur}
 					/>
