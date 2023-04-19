@@ -13,9 +13,9 @@ export default function FrmDossier({ouvert, setOuvert, actionDossier, id_p=null,
 	const [couverture, setCouverture] = useState(couverture_p);
 	const [couleur, setCouleur] = useState(couleur_p);
 
-	console.log("Le titre : ", titre);
-  console.log("La couverture : ", couverture);
-  console.log("La couleur : ", couleur);
+	//console.log("Le titre : ", titre);
+ // console.log("La couverture : ", couverture);
+ // console.log("La couleur : ", couleur);
   
 
   function gererFermer() {

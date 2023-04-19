@@ -5,7 +5,9 @@ import ThreeSixtyIcon from "@mui/icons-material/ThreeSixty";
 import EditIcon from "@mui/icons-material/Edit";
 import ClearIcon from "@mui/icons-material/Clear";
 import FrmDossier from "./FrmDossier";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { creer } from '../code/signet-modele';
+import { UtilisateurContext } from './Appli';
 
 export default function Dossier({
   id,
@@ -13,26 +15,97 @@ export default function Dossier({
   couverture,
   couleur,
   dateModif,
+  top3,
   supprimerDossier,
   modifierDossier,
 }) {
+
+    // Récupérer l'utilisateur connecté du contexte
+    const uid = useContext(UtilisateurContext).uid;
+   
+  //État des signets dans ce dossier
+  const [signets, setSignets] = useState(top3 || []);
+
+
   // État d'ouverture du formulaire
   const [frmDossierOuvert, setFrmDossierOuvert] = useState(false);
 
-  const [carteActive, setCarteActive] =useState(false);
+  const [contenuDossierVisible, setContenuDossierVisible] =useState(false);
+
+//Gérer les évènements Glisser/Déposer
+
+//État zone de dépçot du dossier
+const [zd, setZd] = useState(false)
+
+
+function gererDragEnter(evt) {
+  evt.dataTransfer.effectAllowed = 'link';
+  evt.preventDefault();
+  setZd(true);
+}
+
+function gererDragOver(evt) {
+  evt.preventDefault();
+}
+
+function gererDragLeave(evt) {
+  //console.log('target', evt.target);
+  //console.log('current target', evt.currentTarget);
+  //console.log('relatedTarget', evt.relatedTarget)
+  if(evt.currentTarget.contains(evt.relatedTarget)) {
+  return;
+ }
+ setZd(false);
+ }
+
+async function gererDrop(evt) {
+  const url= evt.dataTransfer.getData('url');
+  evt.preventDefault();
+  console.log('Données déposées ', url)
+  setZd(false);
+  setContenuDossierVisible(true);
+
+//Chercher le titre associé à l'url
+const reponseUrl = await fetch(url);
+const reponseTexte = await reponseUrl.text();
+console.log(reponseTexte);
+
+  ajouterSignet(id, url);
+}
+
+async function ajouterSignet(idDossier, urlSignet) {
+  const derniers3 = [...signets, {url: urlSignet, titre: 'temp'}].slice(-3);
+  await creer(uid, idDossier, derniers3);
+  setSignets(derniers3);
+}
+
+
 
 
   return (
     // Remarquez l'objet JS donné à la valeur de l'attribut style en JSX, voir :
     // https://reactjs.org/docs/dom-elements.html#style
-    <article className={"Dossier"+ (carteActive ? ' actif' : '')} style={{ backgroundColor: couleur }}>
+    <article 
+    className={"Dossier"
+    +(contenuDossierVisible ? ' actif' : '') 
+    +(zd ? ' zd' : '')} 
+
+    style={{ backgroundColor: couleur }}
+
+    onDragEnter={gererDragEnter}
+    onDragOver={gererDragOver}
+    onDrop={gererDrop}
+    onDragLeave={gererDragLeave}
+    
+
+    >
     
       <div className="carte">
        
         <div className="endroit">
         
           <div className="couverture">
-            <IconButton onClick={()=> setCarteActive(true)}
+            <IconButton onClick={()=> setContenuDossierVisible(true)}
               className="tourner"
               aria-label="Tourner"
               disableRipple={true}
@@ -83,7 +156,7 @@ export default function Dossier({
         </div>
         
         <div className="envers">
-        <IconButton onClick={()=> setCarteActive(false)}
+        <IconButton onClick={()=> setContenuDossierVisible(false)}
               className="tourner"
               aria-label="Tourner"
               disableRipple={true}
@@ -91,9 +164,14 @@ export default function Dossier({
             >
               <ThreeSixtyIcon />
             </IconButton>
-            <a href="https://fr.wikipedia.org/wiki/Bataille_d%27Actium" target='_blank'>Bataille d'Actium</a>
-            <a href="https://fr.wikipedia.org/wiki/Bataille_de_Waterloo" target='_blank'>Bataille de Waterloo</a>
-            <a href="https://fr.wikipedia.org/wiki/Bataille_de_l%27Atlantique_(1939-1945)" target='_blank'>Bataille de l'Atlantique</a>
+            {
+              signets.map(
+                (signet, position) => <a key={position} href="{signet.url}" target='_blank'>
+                {signet.titre}
+                </a>
+              )
+            }
+            
         </div>
       </div>
     </article>

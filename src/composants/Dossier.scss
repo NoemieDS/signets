@@ -14,6 +14,26 @@
   cursor: grab;
   overflow: hidden;
 
+  &.zd {
+    box-shadow: 0 0 8px 5px rgba($color: #00b93e, $alpha: 0.6);
+
+    &::after {
+      position:absolute;
+      content:'🏛';
+      top:0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba($color: #333, $alpha: 0.6);
+      pointer-events: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 3rem;
+      color: bisque;
+    }
+  } 
+
   &.actif .carte {
     transform: rotateY(180deg);
   }
@@ -31,7 +51,9 @@
       top: 0;
       left: 0;
       backface-visibility: hidden;
-      transform: rotateX(0deg);
+      //nécessaire pour firefox, pour contrer bugue avec backface-visibility
+      // https://bugzilla.mozilla.org/show_bug.cgi?id=1201471
+     transform: rotateX(0deg);
       }
 
     .endroit {
@@ -67,13 +89,14 @@
       position: absolute;
       display: flex;
       flex-direction: column;
-      justify-content: space-around;
+      justify-content: space-evenly;
+      padding-top: 2rem;
     
       a {
         padding: 0.5rem;
         margin: 0.5rem;
-        border-top: 1px dotted #ccc;
-        border-bottom: 1px dotted #ccc;
+        //border-top: 1px dotted #ccc;
+        border-bottom: 2px dotted #ccc;
       }
     }
   }
@@ -93,6 +116,7 @@
   .tourner {
     top: 0.6rem;
     left: 0.6rem;
+   
   }
 
   .supprimer {
@@ -104,4 +128,5 @@
     bottom: 0.6rem;
     right: 0.6rem;
   }
+
 }

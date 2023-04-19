@@ -4,6 +4,8 @@ import './Appli.scss';
 import { useEffect, useState, createContext } from 'react';
 import { observerEtatConnexion } from '../code/utilisateur-modele';
 
+//On crée une variable "globale" qui pourra être partagé avec toute une 
+//hierarchie de composants d'un seul coup
 export const UtilisateurContext = createContext(null);
 
 
@@ -19,6 +21,8 @@ export default function Appli() {
     return (
         utilisateur 
         ? 
+        //On partage la variable de contexte avec le composant PageUtilisateur
+        //et tous ses descendants
         <UtilisateurContext.Provider value={utilisateur}>  
         <PageUtilisateur /> 
         </UtilisateurContext.Provider>

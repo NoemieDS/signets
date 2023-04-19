@@ -34,7 +34,10 @@ export default function PageUtilisateur() {
   }
 
   return (
-    <div className="PageUtilisateur">
+    <div className="PageUtilisateur" 
+    onDrop={(evt)=>evt.preventDefault()}
+    onDragOver={(evt)=>evt.preventDefault()}
+    >
         <Entete />
         <section className="contenu-principal">
           <ListeDossiers dossiers={dossiers} setDossiers={setDossiers} />
