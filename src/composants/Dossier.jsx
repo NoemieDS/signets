@@ -56,27 +56,43 @@ function gererDragLeave(evt) {
   return;
  }
  setZd(false);
- console.log('Entre...');
+// console.log('Entre...');
  }
 
 async function gererDrop(evt) {
   const url= evt.dataTransfer.getData('URL');
   evt.preventDefault();
-  console.log('Données déposées ', url)
+  //console.log('Données déposées ', url)
   setZd(false);
   setContenuDossierVisible(true);
 
 //Chercher le titre associé à l'url
- // Ce code est problématique à cause de CORS (détail au prochain cours)
-//const reponseUrl = await fetch(url);
-//const reponseTexte = await reponseUrl.text();
+ // Ce code est problématique à cause de SOP : Same Origin Policy
+ //Comme SOP est trop restrictif, on peut permettre certaines requêtes HTTP d'origines différentes
+ //sous certaines conditions, avec le concept CORS : Cross Origin Resource Sharing
+const reponseUrl = await fetch('https://cors-anywhere.herokuapp.com/' + url);
+const reponseTexte = await reponseUrl.text();
 //console.log(reponseTexte);
+//On instancie un parseur DOM en JS et on lui donne la réponse en input
 
-  ajouterSignet(id, url);
+//SOLUTION 1 : avec un parseaur DOM 
+const doc = new DOMParser().parseFromString(reponseTexte, "text/html");
+const titre = doc.querySelectorAll('title')[0].innerText;
+
+//SOLUTION 2 : avec appariement des formes (Pattern Matching)
+//search, replace, match des fonctions JS 
+//const resultat = reponseTexte.match(/<title>(.*)<\/title>/i)[1]
+//console.log('match du title :', resultat);
+
+//console.log('Titre', titre);
+
+//titre = resultat;
+
+  ajouterSignet(id, url, titre);
 }
 
-async function ajouterSignet(idDossier, urlSignet) {
-  const derniers3 = [...signets, {url: urlSignet, titre: urlSignet}].slice(-3);
+async function ajouterSignet(idDossier, urlSignet, titreSignet) {
+  const derniers3 = [...signets, {url: urlSignet, titre: titreSignet}].slice(-3);
   await creer(uid, idDossier, derniers3);
   setSignets(derniers3);
 }
@@ -90,7 +106,7 @@ async function ajouterSignet(idDossier, urlSignet) {
     +(zd ? ' zd' : '')
   } 
     style={{ backgroundColor: couleur }}
-    onDragEnter={gererDragEnter}
+    onDragEnter={gererDragEnter} //évènement de html 5, pas de react (on drag, on drop, etc)
     onDragOver={gererDragOver}
     onDrop={gererDrop}
     onDragLeave={gererDragLeave}
